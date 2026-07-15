@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KingFoodMart — Quản lý Kho Tươi Sống</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/charts.css">
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">🥩</div>
+          <div>
+            <div class="logo-text">KingFoodMart</div>
+            <span class="logo-sub">Quản lý kho tươi sống</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Tổng quan</div>
+        <div class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+
+        <div class="nav-section-label">Giao dịch</div>
+        <div class="nav-item" data-page="imports">
+          <span class="nav-icon">📥</span>
+          <span>Nhập hàng</span>
+        </div>
+        <div class="nav-item" data-page="exports">
+          <span class="nav-icon">📤</span>
+          <span>Xuất hàng</span>
+        </div>
+
+        <div class="nav-section-label">Kho hàng</div>
+        <div class="nav-item" data-page="inventory">
+          <span class="nav-icon">📦</span>
+          <span>Tồn kho</span>
+          <span class="nav-badge" id="badge-lowstock" style="display:none;"></span>
+        </div>
+
+        <div class="nav-item" data-page="booking">
+          <span class="nav-icon">📋</span>
+          <span>Booking</span>
+        </div>
+        <div class="nav-item" data-page="fc">
+          <span class="nav-icon">📊</span>
+          <span>FC</span>
+        </div>
+
+        <div class="nav-section-label">Phân tích</div>
+        <div class="nav-item" data-page="reports">
+          <span class="nav-icon">📈</span>
+          <span>Báo cáo</span>
+        </div>
+
+        <div class="nav-section-label">Dữ liệu</div>
+        <div class="nav-item" data-page="pricelist">
+          <span class="nav-icon">💰</span>
+          <span>Bảng giá</span>
+        </div>
+        <div class="nav-item" data-page="masterdata">
+          <span class="nav-icon">🗂️</span>
+          <span>Mã hàng</span>
+        </div>
+        <div class="nav-item" id="nav-import-excel">
+          <span class="nav-icon">📂</span>
+          <span>Import Excel</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">H</div>
+          <div>
+            <div class="user-name">Hau Nguyen</div>
+            <div class="user-role">Quản lý kho</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========== MAIN ========== -->
+    <div class="main-wrapper">
+
+      <!-- Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div>
+            <div class="header-title" id="page-title">Dashboard</div>
+            <div class="header-subtitle" id="page-subtitle">Tổng quan hoạt động kho hôm nay</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="header-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="global-search" placeholder="Tìm kiếm...">
+          </div>
+          <div class="header-date" id="header-date"></div>
+          <button class="btn btn-primary" id="btn-add">+ Thêm giao dịch</button>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content" id="page-content"></main>
+    </div>
+  </div>
+
+  <!-- ========== MODAL ========== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title" class="panel-title"></h3>
+        <button id="modal-close" class="modal-close">×</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ========== TOAST ========== -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Hidden file inputs for Excel -->
+  <input type="file" id="file-input-import"    accept=".xlsx,.xls" style="display:none;">
+  <input type="file" id="file-input-export"    accept=".xlsx,.xls" style="display:none;">
+  <input type="file" id="file-input-pricelist" accept=".xlsx,.xls" style="display:none;">
+  <input type="file" id="file-input-booking"   accept=".xlsx,.xls" style="display:none;">
+  <input type="file" id="file-input-fc"         accept=".xlsx,.xls" style="display:none;">
+  <input type="file" id="file-input-masterdata" accept=".xlsx,.xls" style="display:none;">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+  <script src="js/utils.js?v=20250710"></script>
+  <script src="js/data.js?v=20250710"></script>
+  <script src="js/excel-import.js?v=20250710"></script>
+  <script src="js/app.js?v=20250710"></script>
+</body>
+</html>

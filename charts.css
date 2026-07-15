@@ -1,0 +1,74 @@
+/* ===================================
+   CHARTS.CSS — Chart Containers
+   =================================== */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  padding: var(--space-md);
+}
+
+.chart-container canvas {
+  width: 100% !important;
+}
+
+.chart-wrapper-lg {
+  height: 320px;
+}
+
+.chart-wrapper-md {
+  height: 260px;
+}
+
+.chart-wrapper-sm {
+  height: 200px;
+}
+
+.chart-legend-custom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-md) 0;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.chart-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+/* Donut chart center text */
+.donut-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-center-text {
+  position: absolute;
+  text-align: center;
+  pointer-events: none;
+}
+
+.donut-center-text .donut-value {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.donut-center-text .donut-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 4px;
+}

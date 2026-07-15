@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Windown\\\\Downloads\\\\\" | Where-Object { $_.Name -match \"Nhap|Xuat|nhap|xuat|NhapHang|XuatHang\" } | Select-Object Name, LastWriteTime | Sort-Object LastWriteTime -Descending | Select-Object -First 10)"
+    ]
+  }
+}
